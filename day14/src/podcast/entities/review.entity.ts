@@ -1,7 +1,7 @@
 import { ObjectType, Field } from "@nestjs/graphql";
 import { IsString } from "class-validator";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import { CoreEntity } from "./core.entity";
 import { Podcast } from "./podcast.entity";
 

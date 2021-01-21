@@ -1,10 +1,9 @@
 import { Episode } from "./episode.entity";
 import { ObjectType, Field } from "@nestjs/graphql";
 import { IsString, Min, Max, IsNumber } from "class-validator";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { CoreEntity } from "./core.entity";
 import { Review } from "./review.entity";
-import { User } from "src/users/entities/user.entity";
 
 @Entity()
 @ObjectType()

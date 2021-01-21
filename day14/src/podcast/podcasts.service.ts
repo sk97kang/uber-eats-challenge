@@ -22,7 +22,6 @@ import {
   SearchPodcastsOutput,
   ReviewPodcastInput,
   SubscribeToPodcastInput,
-  SeeSubscriptionsInput,
   SeeSubscriptionsOutput,
   MakeEpisodeAsPlayedInput,
 } from "./dtos/podcast.dto";

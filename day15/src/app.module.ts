@@ -18,27 +18,29 @@ import { AuthModule } from "./auth/auth.module";
       database: "db.sqlite3",
       synchronize: true,
       logging: process.env.NODE_ENV !== "test",
-      entities: [Podcast, Episode, User, Review]
+      entities: [Podcast, Episode, User, Review],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
       context: ({ req }) => {
         return { user: req["user"] };
-      }
+      },
+      playground: true,
+      introspection: true,
     }),
     JwtModule.forRoot({
-      privateKey: "8mMJe5dMGORyoRPLvngA8U4aLTF3WasX"
+      privateKey: "8mMJe5dMGORyoRPLvngA8U4aLTF3WasX",
     }),
     PodcastsModule,
     UsersModule,
-    AuthModule
-  ]
+    AuthModule,
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(JwtMiddleware).forRoutes({
       path: "/graphql",
-      method: RequestMethod.POST
+      method: RequestMethod.POST,
     });
   }
 }

@@ -35,7 +35,7 @@ export const PodcastsPage = () => {
   return (
     <div className="bg-gray-900 h-screen text-white">
       {data.getAllPodcasts.podcasts?.map(podcast => (
-        <Link to={`/podcast/${podcast.id}`}>
+        <Link key={podcast.id} to={`/podcast/${podcast.id}`}>
           <div className="p-4 border-t border-b border-gray-600">
             <div className="flex">
               <img

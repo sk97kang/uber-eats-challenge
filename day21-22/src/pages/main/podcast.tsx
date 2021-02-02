@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { getPodcast, getPodcastVariables } from "../../codegen/getPodcast";
@@ -51,13 +51,38 @@ export const PodcastPage = () => {
     GET_PODCAST,
     { variables: { input: { id: +params.id } } }
   );
+  const client = useApolloClient();
   const onCompleted = (data: toggleSubscribe) => {
     const {
       toggleSubscribe: { ok },
     } = data;
 
     if (ok && user) {
-      refetch();
+      //refetch();
+      const isSubscribe = user.me.subsriptions.find(
+        subscription => subscription.id === +params.id
+      );
+      let newSubscriptions = [];
+      if (isSubscribe) {
+        newSubscriptions = user.me.subsriptions.filter(
+          subscription => subscription.id !== +params.id
+        );
+      } else {
+        newSubscriptions = [...user.me.subsriptions, { id: +params.id }];
+      }
+      client.writeFragment({
+        id: `User:${user.me.id}`,
+        fragment: gql`
+          fragment SubscriptionsUser on User {
+            subsriptions {
+              id
+            }
+          }
+        `,
+        data: {
+          subsriptions: newSubscriptions,
+        },
+      });
     }
   };
   const [toggleSubscribe, { loading: subscribeLoading }] = useMutation<

@@ -8,10 +8,10 @@ import { FormError } from "../components/form-error";
 import { LS_TOKEN } from "../constants";
 import {
   LoginMutation,
-  LoginMutationVariables
+  LoginMutationVariables,
 } from "../__type_graphql__/LoginMutation";
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
@@ -27,15 +27,19 @@ interface ILoginForm {
 }
 
 export const Login = () => {
-  const { register, getValues, errors, handleSubmit, formState } = useForm<
-    ILoginForm
-  >({
-    mode: "onChange"
+  const {
+    register,
+    getValues,
+    errors,
+    handleSubmit,
+    formState,
+  } = useForm<ILoginForm>({
+    mode: "onChange",
   });
 
   const onCompleted = (data: LoginMutation) => {
     const {
-      login: { ok, token }
+      login: { ok, token },
     } = data;
 
     if (ok && token) {
@@ -45,14 +49,14 @@ export const Login = () => {
     }
   };
   const variables = {
-    loginInput: getValues()
+    loginInput: getValues(),
   };
   const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     LoginMutation,
     LoginMutationVariables
   >(LOGIN_MUTATION, {
     variables,
-    onCompleted
+    onCompleted,
   });
 
   const _submit = () => {
@@ -102,7 +106,7 @@ export const Login = () => {
               </svg>
               <input
                 ref={register({
-                  required: "Email is required!"
+                  required: "Email is required!",
                 })}
                 className="focus:outline-none pl-2 w-full"
                 name="email"
@@ -131,7 +135,7 @@ export const Login = () => {
               <input
                 ref={register({
                   required: "Password is required!",
-                  minLength: 10
+                  minLength: 10,
                 })}
                 className="focus:outline-none pl-2 w-full"
                 name="password"

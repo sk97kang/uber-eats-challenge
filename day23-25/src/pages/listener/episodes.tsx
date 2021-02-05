@@ -5,10 +5,9 @@ import { PODCAST_FRAGMENT } from "../../fragments";
 import {
   getEpisodes,
   getEpisodesVariables,
-  getEpisodes_getPodcast_podcast
 } from "../../__type_graphql__/getEpisodes";
 
-const GET_EPISODES_QUERY = gql`
+export const GET_EPISODES_QUERY = gql`
   query getEpisodes($input: PodcastSearchInput!) {
     getPodcast(input: $input) {
       ok
@@ -40,12 +39,11 @@ export const Episodes = () => {
     {
       variables: {
         input: {
-          id: +params.id
-        }
-      }
+          id: +params.id,
+        },
+      },
     }
   );
-
   if (!data || loading || error) {
     return (
       <div className="h-screen flex justify-center items-center">
@@ -76,14 +74,17 @@ export const Episodes = () => {
         </div>
         <div
           style={{
-            backgroundImage: `url(${data?.getPodcast.podcast?.thumbnailUrl})`
+            backgroundImage: `url(${data?.getPodcast.podcast?.thumbnailUrl})`,
           }}
           className="bg-cover w-32 h-32 md:w-48 md:h-48 rounded-md"
         ></div>
       </div>
       <div className="grid grid-cols-1 gap-3">
-        {data?.getEpisodes.episodes?.map((episode) => (
-          <div className="w-full border-2 border-blue-400 rounded-lg px-4 md:px-16 py-3 flex justify-between items-center">
+        {data?.getEpisodes.episodes?.map(episode => (
+          <div
+            key={episode.title}
+            className="w-full border-2 border-blue-400 rounded-lg px-4 md:px-16 py-3 flex justify-between items-center"
+          >
             <div className="mr-2 md:mr-8">
               <h2 className="font-semibold font-lg">{episode.title}</h2>
               <h3 className="font-md"> - {episode.description}</h3>

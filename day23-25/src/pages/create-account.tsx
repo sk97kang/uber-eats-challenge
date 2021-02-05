@@ -6,11 +6,11 @@ import { Button } from "../components/button";
 import { FormError } from "../components/form-error";
 import {
   CreateAccountMutation,
-  CreateAccountMutationVariables
+  CreateAccountMutationVariables,
 } from "../__type_graphql__/CreateAccountMutation";
 import { UserRole } from "../__type_graphql__/globalTypes";
 
-const CREATE_ACCOUNT_MUTATION = gql`
+export const CREATE_ACCOUNT_MUTATION = gql`
   mutation CreateAccountMutation($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
       ok
@@ -27,18 +27,22 @@ interface ICreateAccountFrom {
 }
 
 export const CreateAccount = () => {
-  const { register, handleSubmit, errors, getValues, formState } = useForm<
-    ICreateAccountFrom
-  >({
-    mode: "onBlur",
+  const {
+    register,
+    handleSubmit,
+    errors,
+    getValues,
+    formState,
+  } = useForm<ICreateAccountFrom>({
+    mode: "onChange",
     defaultValues: {
-      role: UserRole.Host
-    }
+      role: UserRole.Host,
+    },
   });
   const history = useHistory();
   const onCompleted = (data: CreateAccountMutation) => {
     const {
-      createAccount: { ok }
+      createAccount: { ok },
     } = data;
 
     if (ok) {
@@ -49,14 +53,14 @@ export const CreateAccount = () => {
   const { email, password, role } = getValues();
   const [
     createAccountMutation,
-    { data: createAccountResult, loading }
+    { data: createAccountResult, loading },
   ] = useMutation<CreateAccountMutation, CreateAccountMutationVariables>(
     CREATE_ACCOUNT_MUTATION,
     {
       variables: {
-        createAccountInput: { email, password, role }
+        createAccountInput: { email, password, role },
       },
-      onCompleted
+      onCompleted,
     }
   );
   const _submit = () => {
@@ -96,12 +100,12 @@ export const CreateAccount = () => {
             ref={register({
               required: {
                 value: true,
-                message: "Email is required!"
+                message: "Email is required!",
               },
               pattern: {
                 value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: "Email address invalid"
-              }
+                message: "Email address invalid",
+              },
             })}
             className="border-b-2 border-blue-400 py-2 bg-transparent focus:outline-none w-full"
             name="email"
@@ -133,12 +137,12 @@ export const CreateAccount = () => {
             ref={register({
               required: {
                 value: true,
-                message: "Password is required!"
+                message: "Password is required!",
               },
               minLength: {
                 value: 10,
-                message: "Password must be more than 10 characters"
-              }
+                message: "Password must be more than 10 characters",
+              },
             })}
             className="border-b-2 border-blue-400 py-2 bg-transparent focus:outline-none w-full"
             name="password"
@@ -148,7 +152,7 @@ export const CreateAccount = () => {
           <input
             ref={register({
               required: "Password is required!",
-              validate: (value) => value === getValues().password
+              validate: value => value === getValues().password,
             })}
             className="mt-4 border-b-2 border-blue-400 py-2 bg-transparent focus:outline-none w-full"
             name="confirm_password"
